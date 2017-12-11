@@ -32,9 +32,11 @@ $expected_event_id = $r[0] + 1;
 <br>
 
 <div class='block'>
-  <div class='fl'><img src='img/arrow-down.svg' class='icon14_16'>Teilnehmer</div>
-  <div class='fr'>Bezahler<img src='img/arrow-down.svg' class='icon14_16'></div>
-<br>
+    <div class='head'>
+        <div class='fl'><img src='img/arrow-down.svg' class='icon14_16'>Teilnehmer</div>
+        <div class='fr'>Bezahler<img src='img/arrow-down.svg' class='icon14_16'></div>
+    </div>
+    <br>
 
 <?php
 // Get top 3 whoms turn it is
@@ -51,13 +53,23 @@ while ($user = $res->fetchArray ()) {
     if (in_array ($user[0], $next)) {
         $ba = "<b>";
         $bb = "</b>";
-    }
-    print ("<div style='width:100%' class='block'><label><input type='checkbox' name='user[".$user[0]."]' class='user'>"
-        . $ba . $user[1]." (".($user[2]/100)."&euro;)$bb</label>"
-        . "<div class='fr'>&nbsp;+<input type='text' name='plus[".$user[0]."]' size='1' value='0'>"
-        . " <input type='radio' value='".$user[0]."' class='pay_radio' name='payer'></div>"
-        . "</div><br>"
-    );
+    } 
+    $checked = "";
+    if ($user[0] == $_USER['ID']) {
+      $checked = "checked";
+    }?>
+    <div class='block'>
+      <label>
+        <input type='checkbox' name='user[<?php print $user[0]?>]' class='user'>
+          <?php print $ba . $user[1]. " (".($user[2]/100)."&euro;)" . $bb; ?>
+      </label>
+      <div class='fr'>
+        &nbsp;+<input type='text' name='plus[<?php print $user[0] ?>]' size='1' value='0'>
+        <input type='radio' value='<?php print $user[0] ?>' class='pay_radio' name='payer' <?php print $checked ?>>
+      </div>
+    </div>
+    <br>
+<?php
 }
 ?>
 </div>
